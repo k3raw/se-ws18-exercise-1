@@ -1,9 +1,7 @@
-
 import java.nio.ByteBuffer;
 import java.io.IOException;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 
 public class Image {
 	public int height ,width;
@@ -34,17 +32,26 @@ public class Image {
 		this.data[index + 2] = rgba[2];
 		
 	}
-
 	
-	public void write(String filename) throws IOException{
-
-	    String string = "p6\t" + width + "\t" + height + "\t";
-	     
-	    FileOutputStream outputStream = new FileOutputStream(filename);
-	    byte[] stringtobyte = string.getBytes();
-	    outputStream.write(stringtobyte);
-	  
-	    outputStream.close();
+	public void write(String filename) throws IOException {	
+		//get idea from Nikilsss' github,
+		FileWriter filewriter = new FileWriter(filename);
+		BufferedWriter bufferwriter= new BufferedWriter(filewriter);
+		
+		String exercise1="p6\t" + width + "\t" + height + "\t" ;
+		bufferwriter.write(exercise1);
+		 for(int i=0;i<height;i++){
+			 bufferwriter.newLine();
+			 for(int j=0;j<width;j++){
+				 int index = this.linearize(i, j)*3;
+				 bufferwriter.write((((data[index]))+"\t"));
+				 bufferwriter.write((((data[index + 1]))+"\t"));
+				 bufferwriter.write((((data[index + 2]))+"\t"));
+				 
+			 }
+	 }
+		bufferwriter.close();
+		
 	}
 	
 	private int linearize(int x, int y) {
