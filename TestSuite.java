@@ -1,41 +1,58 @@
-import TinyTestJ.Test;
+import java.nio.ByteBuffer;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 
-import TinyTestJ.RunTests;
-
-public class TestSuite {
-
-  @Test public static void ImageTest1() {
-    Image i = new Image(100,100);
-    assert (i.data.length == 30000);
-  }
-
-  @Test public static void ImageTest2() {
-    Image i = new Image(100,100);
-    i.set(0,0,0x123456);
-    assert (i.data[0] == (byte)0x12);
-    assert (i.data[1] == (byte)0x34);
-    assert (i.data[2] == (byte)0x56);
-   
-  }
-
-  @Test public static void ImageTest3() {
-    Image i = new Image(100,100);
-    i.set(99,99,0x123456);
-    int len = i.data.length;
-    assert (i.data[len-4] == (byte)0x00);
-    assert (i.data[len-3] == (byte)0x12);
-    assert (i.data[len-2] == (byte)0x34);
-    assert (i.data[len-1] == (byte)0x56);
-    assert (false);
-  }
-
-  @Test public static void ImageTest4() throws java.io.FileNotFoundException,java.io.IOException {
-    String filename = "test.ppm";
-    Image i = new Image(100,100);
-    i.write(filename);
-    java.io.File f = new java.io.File(filename);
-    boolean exists = f.exists() && f.isFile();
-    assert (exists);
-  }
-
+public class Image {
+	public int height ,width;
+	public byte[] data;
+	public int rgb;
+	public int index;
+	public int val=255;
+	public int valRgb;
+	
+	public Image(int height, int width) {
+	
+		this.height = height;
+		this.width = width;
+		this.data = new byte [height*width*3];
+		
+	}
+	
+	public void set(int x, int y, int val) {
+		ByteBuffer dbuf = ByteBuffer.allocate(4);
+		byte [] rgba = dbuf.putInt(val).array();
+		
+		int index = this.linearize(x, y) * 3;
+		
+		this.data[index] = rgba[1];
+		this.data[index + 1] = rgba[2];
+		this.data[index + 2] = rgba[3];
+	}
+	
+	public void write(String filename) throws IOException {
+		//get idea from nikilsss' github
+		FileWriter filewriter = new FileWriter(filename);
+		BufferedWriter bufferwriter= new BufferedWriter(filewriter);
+		
+		String exercise1="p6\t" + width + "\t" + height + "\t" ;
+		bufferwriter.write(exercise1);
+		 for(int i=0;i<height;i++){
+			 bufferwriter.newLine();
+			 for(int j=0;j<width;j++){
+				 int index = this.linearize(i, j)*3;
+				 bufferwriter.write((((data[index]))+"\t"));
+				 bufferwriter.write((((data[index + 1]))+"\t"));
+				 bufferwriter.write((((data[index + 2]))+"\t"));
+				 
+			 }
+	 }
+		bufferwriter.close();
+		
+	}
+	
+	private int linearize(int x, int y) {
+		return x + this.width * y;
+	}
+ 
 }
