@@ -15,18 +15,19 @@ public class TestSuite {
     assert (i.data[0] == (byte)0x12);
     assert (i.data[1] == (byte)0x34);
     assert (i.data[2] == (byte)0x56);
-    assert (i.data[3] == (byte)0x00);
+   
   }
 
   @Test public static void ImageTest3() {
     Image i = new Image(100,100);
     i.set(99,99,0x123456);
     int len1 = i.data.length-3;
-    int len2=i.data.length-2;
-    int len3=i.data.length-1;
+    int len2= i.data.length-2;
+    int len3= i.data.length-1;
     assert(i.data[len1]==(byte)0x12);
     assert(i.data[len2]==(byte)0x34);
     assert(i.data[len3]==(byte)0x56);
+    assert(true);
     
   }
 
