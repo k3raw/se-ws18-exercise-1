@@ -1,5 +1,7 @@
+package TinyTestJ;
 
 import java.nio.ByteBuffer;
+import java.nio.file.FileSystemException;
 import java.io.IOException;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
@@ -31,7 +33,7 @@ public class Image {
 		this.data[index + 2] = rgba[3];
 	}
 	
-	public void write(String filename) throws IOException {
+	public void write(String filename) throws java.io.FileNotFoundException,java.io.IOException {
 		//get idea from nikilsss' github
 		FileWriter filewriter = new FileWriter(filename);
 		BufferedWriter bufferwriter= new BufferedWriter(filewriter);
