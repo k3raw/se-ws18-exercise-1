@@ -1,4 +1,5 @@
 import TinyTestJ.Test;
+
 import TinyTestJ.RunTests;
 
 public class TestSuite {
@@ -20,8 +21,13 @@ public class TestSuite {
   @Test public static void ImageTest3() {
     Image i = new Image(100,100);
     i.set(99,99,0x123456);
-    int len = i.data.length;
-    assert (false);
+    int len1 = i.data.length-3;
+    int len2=i.data.length-2;
+    int len3=i.data.length-1;
+    assert(i.data[len1]==(byte)0x12);
+    assert(i.data[len2]==(byte)0x34);
+    assert(i.data[len3]==(byte)0x56);
+    
   }
 
   @Test public static void ImageTest4() throws java.io.FileNotFoundException,java.io.IOException {
