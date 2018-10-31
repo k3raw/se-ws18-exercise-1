@@ -1,5 +1,5 @@
 import TinyTestJ.Test;
-impor Image;
+import Image;
 
 import TinyTestJ.RunTests;
 
